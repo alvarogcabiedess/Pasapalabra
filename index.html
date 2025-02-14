@@ -19,15 +19,15 @@
         }
         .rosco {
             position: relative;
-            width: 400px;
-            height: 400px;
+            width: 500px;
+            height: 500px;
             border-radius: 50%;
             background-color: #ddd;
         }
         .letra {
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             background-color: blue;
             color: white;
             font-weight: bold;
@@ -35,11 +35,21 @@
             justify-content: center;
             align-items: center;
             border-radius: 50%;
+            cursor: pointer;
+        }
+        #rosco2 .letra {
+            background-color: orange;
+        }
+        .letra.verde {
+            background-color: green !important;
+        }
+        .letra.rojo {
+            background-color: red !important;
         }
         .centro {
             position: absolute;
-            width: 150px;
-            height: 150px;
+            width: 90%;
+            height: 90%;
             border-radius: 50%;
             background-color: white;
             top: 50%;
@@ -56,46 +66,89 @@
             object-fit: cover;
         }
         .temporizador {
-            font-size: 24px;
-            margin-top: 20px;
+            font-size: 32px;
+            margin-top: 40px;
             cursor: pointer;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 5px;
+        }
+        #temporizador1 {
+            background-color: blue;
+        }
+        #temporizador2 {
+            background-color: orange;
+        }
+        .contador {
+            font-size: 24px;
+            margin-top: 10px;
+            padding: 5px 15px;
+            color: white;
+            border-radius: 5px;
+        }
+        #contador1 {
+            background-color: blue;
+        }
+        #contador2 {
+            background-color: orange;
         }
     </style>
 </head>
 <body>
     <div class="contenedor">
         <div class="rosco" id="rosco1">
-            <div class="centro"><img src="https://images2.fanpop.com/images/photos/5400000/Ulrich-code-lyoko-5456469-604-460.jpg" alt="Imagen centro"></div>
+            <div class="centro"><img src="https://via.placeholder.com/150" alt="Imagen centro"></div>
         </div>
         <div class="temporizador" id="temporizador1">05:00</div>
+        <div class="contador" id="contador1">0</div>
     </div>
     <div class="contenedor">
         <div class="rosco" id="rosco2">
             <div class="centro"><img src="https://via.placeholder.com/150" alt="Imagen centro"></div>
         </div>
         <div class="temporizador" id="temporizador2">05:00</div>
+        <div class="contador" id="contador2">0</div>
     </div>
 
     <script>
         function crearRosco(id) {
             const rosco = document.getElementById(id);
             const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-            const radio = 180;
-            const centroX = 200, centroY = 200;
+            const radio = 220;
+            const centroX = 250, centroY = 250;
             
             letras.forEach((letra, index) => {
                 const angulo = (index / letras.length) * (2 * Math.PI);
-                const x = centroX + radio * Math.cos(angulo) - 25;
-                const y = centroY + radio * Math.sin(angulo) - 25;
+                const x = centroX + radio * Math.cos(angulo) - 30;
+                const y = centroY + radio * Math.sin(angulo) - 30;
                 
                 const divLetra = document.createElement("div");
                 divLetra.classList.add("letra");
                 divLetra.textContent = letra;
                 divLetra.style.left = `${x}px`;
                 divLetra.style.top = `${y}px`;
+                divLetra.addEventListener("click", () => alternarColor(divLetra, id));
                 
                 rosco.appendChild(divLetra);
             });
+        }
+        
+        function alternarColor(elemento, roscoId) {
+            if (elemento.classList.contains("verde")) {
+                elemento.classList.remove("verde");
+                elemento.classList.add("rojo");
+            } else if (elemento.classList.contains("rojo")) {
+                elemento.classList.remove("rojo");
+            } else {
+                elemento.classList.add("verde");
+            }
+            actualizarContador(roscoId);
+        }
+        
+        function actualizarContador(roscoId) {
+            const rosco = document.getElementById(roscoId);
+            const verdes = rosco.querySelectorAll(".letra.verde").length;
+            document.getElementById("contador" + roscoId.slice(-1)).textContent = verdes;
         }
         
         function iniciarTemporizador(id) {
