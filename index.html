@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rosco Pasapalabra</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .rosco {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background-color: #ddd;
+        }
+        .letra {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: blue;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="rosco" id="rosco"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const rosco = document.getElementById("rosco");
+            const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+            const radio = 130;
+            const centroX = 150, centroY = 150;
+            
+            letras.forEach((letra, index) => {
+                const angulo = (index / letras.length) * (2 * Math.PI);
+                const x = centroX + radio * Math.cos(angulo) - 20;
+                const y = centroY + radio * Math.sin(angulo) - 20;
+                
+                const divLetra = document.createElement("div");
+                divLetra.classList.add("letra");
+                divLetra.textContent = letra;
+                divLetra.style.left = `${x}px`;
+                divLetra.style.top = `${y}px`;
+                
+                rosco.appendChild(divLetra);
+            });
+        });
+    </script>
+</body>
+</html>
