@@ -149,6 +149,74 @@
     </div>
 
     <script>
+        function crearRosco(id) {
+            const rosco = document.getElementById(id);
+            const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+            const radio = 250;
+            const centroX = 275, centroY = 275;
+            
+            letras.forEach((letra, index) => {
+                const angulo = ((index - 6) / letras.length) * (2 * Math.PI); // Ajuste para poner la A arriba
+                const x = centroX + radio * Math.cos(angulo) - 30;
+                const y = centroY + radio * Math.sin(angulo) - 30;
+                
+                const divLetra = document.createElement("div");
+                divLetra.classList.add("letra");
+                divLetra.textContent = letra;
+                divLetra.style.left = `${x}px`;
+                divLetra.style.top = `${y}px`;
+                divLetra.addEventListener("click", () => alternarColor(divLetra, id));
+                
+                rosco.appendChild(divLetra);
+            });
+        }
+        
+        function alternarColor(elemento, roscoId) {
+            if (elemento.classList.contains("verde")) {
+                elemento.classList.remove("verde");
+                elemento.classList.add("rojo");
+            } else if (elemento.classList.contains("rojo")) {
+                elemento.classList.remove("rojo");
+            } else {
+                elemento.classList.add("verde");
+            }
+            actualizarContador(roscoId);
+        }
+        
+        function actualizarContador(roscoId) {
+            const rosco = document.getElementById(roscoId);
+            const verdes = rosco.querySelectorAll(".letra.verde").length;
+            document.getElementById("contador" + roscoId.slice(-1)).textContent = verdes;
+        }
+        
+        function iniciarTemporizador(id) {
+            let tiempo = 300;
+            let activo = false;
+            const elemento = document.getElementById(id);
+            let intervalo;
+            
+            function actualizarTiempo() {
+                const minutos = Math.floor(tiempo / 60);
+                const segundos = tiempo % 60;
+                elemento.textContent = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+            }
+            
+            elemento.addEventListener("click", () => {
+                if (activo) {
+                    clearInterval(intervalo);
+                } else {
+                    intervalo = setInterval(() => {
+                        if (tiempo > 0) {
+                            tiempo--;
+                            actualizarTiempo();
+                        } else {
+                            clearInterval(intervalo);
+                        }
+                    }, 1000);
+                }
+                activo = !activo;
+            });
+        }
         function iniciarJuego(opcion) {
             document.getElementById("pantalla-inicial").style.display = "none";
             document.getElementById("pantalla-juego").style.display = "flex";
