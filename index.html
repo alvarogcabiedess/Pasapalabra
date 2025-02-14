@@ -11,9 +11,22 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: white;
             overflow: hidden;
         }
+        .highlighter {
+            width: 300px;
+            height: 50px;
+            background-color: yellow;
+            text-align: center;
+            line-height: 50px;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: none;
+        }
+
         .pantalla-inicial {
             display: flex;
             justify-content: space-around;
@@ -25,8 +38,8 @@
             text-align: center;
         }
         .opcion img {
-            width: 200px;
-            height: 200px;
+            width: 300px;
+            height: 300px;
             object-fit: cover;
             border-radius: 10px;
         }
@@ -47,7 +60,11 @@
             width: 550px;
             height: 550px;
             border-radius: 50%;
-            background-color: #ddd;
+            background-color: white;
+            border: 5px solid transparent;
+        }
+        .rosco.focus {
+            border-color: yellow;
         }
         .letra {
             position: absolute;
@@ -62,6 +79,11 @@
             border-radius: 50%;
             cursor: pointer;
         }
+
+        .letra.amarillo {
+            background-color: yellow;
+        }
+
         #rosco2 .letra {
             background-color: orange;
         }
@@ -76,7 +98,7 @@
             width: 90%;
             height: 90%;
             border-radius: 50%;
-            background-color: #fe43g5;
+            background-color: white;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -123,14 +145,16 @@
     <div class="pantalla-inicial" id="pantalla-inicial">
         <div class="opcion" onclick="iniciarJuego('ulrich-yumi')">
             <img src="https://1.bp.blogspot.com/-MpaXQdHh1Dc/Unlf1fbacgI/AAAAAAAABe4/P9T8vbE_Q7M/s1600/looove.jpg" alt="Ulrich vs Yumi">
-            <h2>Ulrich vs Yumi</h2>
+            <h1>Ulrich vs Yumi</h1>
         </div>
         <div class="opcion" onclick="iniciarJuego('william-odd')">
             <img src="https://images-na.ssl-images-amazon.com/images/S/pv-target-images/7921da61d746c2323a86319af5f78ee946ebaab1126bb81c30444edc75248f07._RI_V_TTW_.png" alt="William vs Odd">
-            <h2>William vs Odd</h2>
+            <h1>William vs Odd</h1>
         </div>
     </div>
     
+    <div class="highlighter" id="highlighter">Jugando: Jugador 1</div>
+
     <div class="pantalla-juego" id="pantalla-juego">
         <div class="contenedor">
             <div class="rosco" id="rosco1">
@@ -149,6 +173,60 @@
     </div>
 
     <script>
+        let focusRosco = 1;
+        let jugadores = {1: "Jugador 1", 2: "Jugador 2"};
+        
+        function actualizarFoco() {
+            document.getElementById("highlighter").textContent = `Jugando: ${jugadores[focusRosco]}`;
+            document.getElementById("rosco1").classList.toggle("focus", focusRosco === 1);
+            document.getElementById("rosco2").classList.toggle("focus", focusRosco === 2);
+        }
+
+        function iniciarJuego(opcion) {
+            document.getElementById("pantalla-inicial").style.display = "none";
+            document.getElementById("pantalla-juego").style.display = "flex";
+            document.getElementById("highlighter").style.display = "block";
+            
+            if (opcion === "ulrich-yumi") {
+                document.getElementById("imagen1").src = "https://images2.fanpop.com/images/photos/5400000/Ulrich-code-lyoko-5456469-604-460.jpg";
+                document.getElementById("imagen2").src = "https://i.pinimg.com/736x/8d/e8/0a/8de80a2dc86be511fd18159c1b14f585--yumi-ishiyama-code-lyoko.jpg";
+                jugadores = {1: "Ulrich", 2: "Yumi"};
+            } else {
+                document.getElementById("imagen1").src = "https://img.codelyoko.fr/galeries/william/William_209.jpg";
+                document.getElementById("imagen2").src = "https://img.codelyoko.fr/galeries/odd2/Odd_0128.jpg";
+                jugadores = {1: "William", 2: "Odd"};
+            }
+            
+            crearRosco("rosco1");
+            crearRosco("rosco2");
+            letraFocus("rosco1");
+            letraFocus("rosco2");
+            actualizarFoco();
+        }
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowRight") {
+                focusRosco = 2;
+            } else if (event.key === "ArrowLeft") {
+                focusRosco = 1;
+            }
+            actualizarFoco();
+
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === " ") {
+                event.preventDefault();
+                const idTemporizador = `temporizador${focusRosco}`;
+                document.getElementById(idTemporizador).click();
+            }
+        });
+            
+
+        document.addEventListener("DOMContentLoaded", () => {
+            actualizarFoco();
+        });
+
         function crearRosco(id) {
             const rosco = document.getElementById(id);
             const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -170,7 +248,31 @@
                 rosco.appendChild(divLetra);
             });
         }
-        
+        /*function letraFocus(id) {
+            const rosco = document.getElementById(id);
+            const letras = rosco.querySelectorAll(".letra");
+            let focus = 0;
+            letras[focus].classList.add("amarillo");
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "b") {
+                    letras[focus].classList.remove("amarillo");
+                    alternarColor(letras[focus], id);
+                    focus = (focus + 1) % letras.length;
+                    letras[focus].classList.add("amarillo");
+                } else if (event.key === "m") {
+                    alternarColor(letras[focus], id);
+                    alternarColor(letras[focus], id);
+                } else if (event.key === "n") {
+                    actualizarFoco();
+                }
+                letras[focus].classList.add("focus");
+                letras.forEach((letra, index) => {
+                    if (index !== focus) {
+                        letra.classList.remove("focus");
+                    }
+                });
+            });
+        }*/
         function alternarColor(elemento, roscoId) {
             if (elemento.classList.contains("verde")) {
                 elemento.classList.remove("verde");
@@ -216,21 +318,6 @@
                 }
                 activo = !activo;
             });
-        }
-        function iniciarJuego(opcion) {
-            document.getElementById("pantalla-inicial").style.display = "none";
-            document.getElementById("pantalla-juego").style.display = "flex";
-            
-            if (opcion === "ulrich-yumi") {
-                document.getElementById("imagen1").src = "https://images2.fanpop.com/images/photos/5400000/Ulrich-code-lyoko-5456469-604-460.jpg";
-                document.getElementById("imagen2").src = "https://i.pinimg.com/736x/8d/e8/0a/8de80a2dc86be511fd18159c1b14f585--yumi-ishiyama-code-lyoko.jpg";
-            } else {
-                document.getElementById("imagen1").src = "https://img.codelyoko.fr/galeries/william/William_209.jpg";
-                document.getElementById("imagen2").src = "https://img.codelyoko.fr/galeries/odd2/Odd_0128.jpg";
-            }
-            
-            crearRosco("rosco1");
-            crearRosco("rosco2");
         }
     
         document.addEventListener("DOMContentLoaded", function() {
