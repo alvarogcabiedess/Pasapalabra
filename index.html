@@ -7,22 +7,27 @@
     <style>
         body {
             display: flex;
-            justify-content: center;
+            justify-content: space-around;
             align-items: center;
             height: 100vh;
             background-color: #f4f4f4;
         }
+        .contenedor {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         .rosco {
             position: relative;
-            width: 500px;
-            height: 500px;
+            width: 400px;
+            height: 400px;
             border-radius: 50%;
             background-color: #ddd;
         }
         .letra {
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             background-color: blue;
             color: white;
             font-weight: bold;
@@ -31,22 +36,57 @@
             align-items: center;
             border-radius: 50%;
         }
+        .centro {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .centro img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .temporizador {
+            font-size: 24px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <div class="rosco" id="rosco"></div>
+    <div class="contenedor">
+        <div class="rosco" id="rosco1">
+            <div class="centro"><img src="https://via.placeholder.com/150" alt="Imagen centro"></div>
+        </div>
+        <div class="temporizador" id="temporizador1">05:00</div>
+    </div>
+    <div class="contenedor">
+        <div class="rosco" id="rosco2">
+            <div class="centro"><img src="https://via.placeholder.com/150" alt="Imagen centro"></div>
+        </div>
+        <div class="temporizador" id="temporizador2">05:00</div>
+    </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const rosco = document.getElementById("rosco");
+        function crearRosco(id) {
+            const rosco = document.getElementById(id);
             const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-            const radio = 130;
-            const centroX = 150, centroY = 150;
+            const radio = 180;
+            const centroX = 200, centroY = 200;
             
             letras.forEach((letra, index) => {
                 const angulo = (index / letras.length) * (2 * Math.PI);
-                const x = centroX + radio * Math.cos(angulo) - 20;
-                const y = centroY + radio * Math.sin(angulo) - 20;
+                const x = centroX + radio * Math.cos(angulo) - 25;
+                const y = centroY + radio * Math.sin(angulo) - 25;
                 
                 const divLetra = document.createElement("div");
                 divLetra.classList.add("letra");
@@ -56,6 +96,42 @@
                 
                 rosco.appendChild(divLetra);
             });
+        }
+        
+        function iniciarTemporizador(id) {
+            let tiempo = 300;
+            let activo = false;
+            const elemento = document.getElementById(id);
+            let intervalo;
+            
+            function actualizarTiempo() {
+                const minutos = Math.floor(tiempo / 60);
+                const segundos = tiempo % 60;
+                elemento.textContent = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+            }
+            
+            elemento.addEventListener("click", () => {
+                if (activo) {
+                    clearInterval(intervalo);
+                } else {
+                    intervalo = setInterval(() => {
+                        if (tiempo > 0) {
+                            tiempo--;
+                            actualizarTiempo();
+                        } else {
+                            clearInterval(intervalo);
+                        }
+                    }, 1000);
+                }
+                activo = !activo;
+            });
+        }
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            crearRosco("rosco1");
+            crearRosco("rosco2");
+            iniciarTemporizador("temporizador1");
+            iniciarTemporizador("temporizador2");
         });
     </script>
 </body>
