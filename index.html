@@ -19,8 +19,8 @@
         }
         .rosco {
             position: relative;
-            width: 550px;
-            height: 550px;
+            width: 500px;
+            height: 500px;
             border-radius: 50%;
             background-color: #ddd;
         }
@@ -48,8 +48,8 @@
         }
         .centro {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 90%;
+            height: 90%;
             border-radius: 50%;
             background-color: white;
             top: 50%;
@@ -66,10 +66,10 @@
             object-fit: cover;
         }
         .temporizador {
-            font-size: 40px;
-            margin-top: 60px;
+            font-size: 32px;
+            margin-top: 40px;
             cursor: pointer;
-            padding: 15px 25px;
+            padding: 10px 20px;
             color: white;
             border-radius: 5px;
         }
@@ -80,9 +80,9 @@
             background-color: orange;
         }
         .contador {
-            font-size: 30px;
+            font-size: 24px;
             margin-top: 10px;
-            padding: 8px 20px;
+            padding: 5px 15px;
             color: white;
             border-radius: 5px;
         }
@@ -97,14 +97,14 @@
 <body>
     <div class="contenedor">
         <div class="rosco" id="rosco1">
-            <div class="centro"><img src="https://images2.fanpop.com/images/photos/5400000/Ulrich-code-lyoko-5456469-604-460.jpg" alt="Imagen centro"></div>
+            <div class="centro"><img src="https://via.placeholder.com/150" alt="Imagen centro"></div>
         </div>
         <div class="temporizador" id="temporizador1">05:00</div>
         <div class="contador" id="contador1">0</div>
     </div>
     <div class="contenedor">
         <div class="rosco" id="rosco2">
-            <div class="centro"><img src="https://i.pinimg.com/736x/8d/e8/0a/8de80a2dc86be511fd18159c1b14f585--yumi-ishiyama-code-lyoko.jpg" alt="Imagen centro"></div>
+            <div class="centro"><img src="https://via.placeholder.com/150" alt="Imagen centro"></div>
         </div>
         <div class="temporizador" id="temporizador2">05:00</div>
         <div class="contador" id="contador2">0</div>
@@ -114,11 +114,11 @@
         function crearRosco(id) {
             const rosco = document.getElementById(id);
             const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-            const radio = 270;
-            const centroX = 275, centroY = 275;
+            const radio = 220;
+            const centroX = 250, centroY = 250;
             
             letras.forEach((letra, index) => {
-                const angulo = ((index - 6) / letras.length) * (2 * Math.PI); // Ajuste para poner la A arriba
+                const angulo = (index / letras.length) * (2 * Math.PI);
                 const x = centroX + radio * Math.cos(angulo) - 30;
                 const y = centroY + radio * Math.sin(angulo) - 30;
                 
