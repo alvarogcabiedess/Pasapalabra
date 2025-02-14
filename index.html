@@ -7,10 +7,34 @@
     <style>
         body {
             display: flex;
-            justify-content: space-around;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: white;
+            background-color: #f4f4f4;
+        }
+        .pantalla-inicial {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 80%;
+            cursor: pointer;
+        }
+        .opcion {
+            text-align: center;
+        }
+        .opcion img {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .pantalla-juego {
+            display: none;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
         }
         .contenedor {
             display: flex;
@@ -19,15 +43,15 @@
         }
         .rosco {
             position: relative;
-            width: 500px;
-            height: 500px;
+            width: 600px;
+            height: 600px;
             border-radius: 50%;
             background-color: #ddd;
         }
         .letra {
             position: absolute;
-            width: 55px;
-            height: 55px;
+            width: 60px;
+            height: 60px;
             background-color: blue;
             color: white;
             font-weight: bold;
@@ -66,10 +90,10 @@
             object-fit: cover;
         }
         .temporizador {
-            font-size: 32px;
-            margin-top: 40px;
+            font-size: 40px;
+            margin-top: 60px;
             cursor: pointer;
-            padding: 10px 20px;
+            padding: 15px 25px;
             color: white;
             border-radius: 5px;
         }
@@ -80,9 +104,9 @@
             background-color: orange;
         }
         .contador {
-            font-size: 24px;
+            font-size: 30px;
             margin-top: 10px;
-            padding: 5px 15px;
+            padding: 8px 20px;
             color: white;
             border-radius: 5px;
         }
@@ -95,91 +119,48 @@
     </style>
 </head>
 <body>
-    <div class="contenedor">
-        <div class="rosco" id="rosco1">
-            <div class="centro"><img src="https://images2.fanpop.com/images/photos/5400000/Ulrich-code-lyoko-5456469-604-460.jpg" alt="Imagen centro"></div>
+    <div class="pantalla-inicial" id="pantalla-inicial">
+        <div class="opcion" onclick="iniciarJuego('ulrich-yumi')">
+            <img src="https://via.placeholder.com/300" alt="Ulrich vs Yumi">
+            <h2>Ulrich vs Yumi</h2>
         </div>
-        <div class="temporizador" id="temporizador1">05:00</div>
-        <div class="contador" id="contador1">0</div>
+        <div class="opcion" onclick="iniciarJuego('william-odd')">
+            <img src="https://via.placeholder.com/300" alt="William vs Odd">
+            <h2>William vs Odd</h2>
+        </div>
     </div>
-    <div class="contenedor">
-        <div class="rosco" id="rosco2">
-            <div class="centro"><img src="https://i.pinimg.com/736x/8d/e8/0a/8de80a2dc86be511fd18159c1b14f585--yumi-ishiyama-code-lyoko.jpg" alt="Imagen centro"></div>
+    
+    <div class="pantalla-juego" id="pantalla-juego">
+        <div class="contenedor">
+            <div class="rosco" id="rosco1">
+                <div class="centro"><img id="imagen1" src="" alt="Imagen centro"></div>
+            </div>
+            <div class="temporizador" id="temporizador1">05:00</div>
+            <div class="contador" id="contador1">0</div>
         </div>
-        <div class="temporizador" id="temporizador2">05:00</div>
-        <div class="contador" id="contador2">0</div>
+        <div class="contenedor">
+            <div class="rosco" id="rosco2">
+                <div class="centro"><img id="imagen2" src="" alt="Imagen centro"></div>
+            </div>
+            <div class="temporizador" id="temporizador2">05:00</div>
+            <div class="contador" id="contador2">0</div>
+        </div>
     </div>
 
     <script>
-        function crearRosco(id) {
-            const rosco = document.getElementById(id);
-            const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-            const radio = 220;
-            const centroX = 250, centroY = 250;
+        function iniciarJuego(opcion) {
+            document.getElementById("pantalla-inicial").style.display = "none";
+            document.getElementById("pantalla-juego").style.display = "flex";
             
-            letras.forEach((letra, index) => {
-                const angulo = (index / letras.length) * (2 * Math.PI);
-                const x = centroX + radio * Math.cos(angulo) - 30;
-                const y = centroY + radio * Math.sin(angulo) - 30;
-                
-                const divLetra = document.createElement("div");
-                divLetra.classList.add("letra");
-                divLetra.textContent = letra;
-                divLetra.style.left = `${x}px`;
-                divLetra.style.top = `${y}px`;
-                divLetra.addEventListener("click", () => alternarColor(divLetra, id));
-                
-                rosco.appendChild(divLetra);
-            });
-        }
-        
-        function alternarColor(elemento, roscoId) {
-            if (elemento.classList.contains("verde")) {
-                elemento.classList.remove("verde");
-                elemento.classList.add("rojo");
-            } else if (elemento.classList.contains("rojo")) {
-                elemento.classList.remove("rojo");
+            if (opcion === "ulrich-yumi") {
+                document.getElementById("imagen1").src = "https://images2.fanpop.com/images/photos/5400000/Ulrich-code-lyoko-5456469-604-460.jpg";
+                document.getElementById("imagen2").src = "https://i.pinimg.com/736x/8d/e8/0a/8de80a2dc86be511fd18159c1b14f585--yumi-ishiyama-code-lyoko.jpg";
             } else {
-                elemento.classList.add("verde");
+                document.getElementById("imagen1").src = "https://img.codelyoko.fr/galeries/william/William_209.jpg";
+                document.getElementById("imagen2").src = "http://img.codelyoko.fr/galeries/odd2/Odd_0128.jpg";
             }
-            actualizarContador(roscoId);
         }
-        
-        function actualizarContador(roscoId) {
-            const rosco = document.getElementById(roscoId);
-            const verdes = rosco.querySelectorAll(".letra.verde").length;
-            document.getElementById("contador" + roscoId.slice(-1)).textContent = verdes;
-        }
-        
-        function iniciarTemporizador(id) {
-            let tiempo = 300;
-            let activo = false;
-            const elemento = document.getElementById(id);
-            let intervalo;
-            
-            function actualizarTiempo() {
-                const minutos = Math.floor(tiempo / 60);
-                const segundos = tiempo % 60;
-                elemento.textContent = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
-            }
-            
-            elemento.addEventListener("click", () => {
-                if (activo) {
-                    clearInterval(intervalo);
-                } else {
-                    intervalo = setInterval(() => {
-                        if (tiempo > 0) {
-                            tiempo--;
-                            actualizarTiempo();
-                        } else {
-                            clearInterval(intervalo);
-                        }
-                    }, 1000);
-                }
-                activo = !activo;
-            });
-        }
-        
+    
         document.addEventListener("DOMContentLoaded", function() {
             crearRosco("rosco1");
             crearRosco("rosco2");
