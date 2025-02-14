@@ -19,8 +19,8 @@
         }
         .rosco {
             position: relative;
-            width: 500px;
-            height: 500px;
+            width: 550px;
+            height: 550px;
             border-radius: 50%;
             background-color: #ddd;
         }
@@ -66,10 +66,10 @@
             object-fit: cover;
         }
         .temporizador {
-            font-size: 32px;
-            margin-top: 40px;
+            font-size: 40px;
+            margin-top: 60px;
             cursor: pointer;
-            padding: 10px 20px;
+            padding: 15px 25px;
             color: white;
             border-radius: 5px;
         }
@@ -80,9 +80,9 @@
             background-color: orange;
         }
         .contador {
-            font-size: 24px;
+            font-size: 30px;
             margin-top: 10px;
-            padding: 5px 15px;
+            padding: 8px 20px;
             color: white;
             border-radius: 5px;
         }
@@ -114,11 +114,11 @@
         function crearRosco(id) {
             const rosco = document.getElementById(id);
             const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-            const radio = 220;
-            const centroX = 250, centroY = 250;
+            const radio = 250;
+            const centroX = 275, centroY = 275;
             
             letras.forEach((letra, index) => {
-                const angulo = (index / letras.length) * (2 * Math.PI);
+                const angulo = ((index - 6) / letras.length) * (2 * Math.PI); // Ajuste para poner la A arriba
                 const x = centroX + radio * Math.cos(angulo) - 30;
                 const y = centroY + radio * Math.sin(angulo) - 30;
                 
