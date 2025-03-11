@@ -5,19 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rosco Pasapalabra</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap');
         body {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: white;
+            background-color: #f0f8ff;
             overflow: hidden;
+            font-family: 'Baloo 2', sans-serif;
         }
         .highlighter {
             width: 300px;
             height: 50px;
-            background-color: yellow;
+            background-color: #ffeb3b;
             text-align: center;
             line-height: 50px;
             font-size: 24px;
@@ -25,6 +27,7 @@
             margin-bottom: 10px;
             border-radius: 10px;
             display: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .pantalla-inicial {
@@ -36,12 +39,17 @@
         }
         .opcion {
             text-align: center;
+            transition: transform 0.3s;
+        }
+        .opcion:hover {
+            transform: scale(1.05);
         }
         .opcion img {
             width: 300px;
             height: 300px;
             object-fit: cover;
             border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .pantalla-juego {
             display: none;
@@ -62,15 +70,16 @@
             border-radius: 50%;
             background-color: white;
             border: 5px solid transparent;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .rosco.focus {
-            border-color: yellow;
+            border-color: #ffeb3b;
         }
         .letra {
             position: absolute;
             width: 60px;
             height: 60px;
-            background-color: blue;
+            background-color: #2196f3;
             color: white;
             font-weight: bold;
             display: flex;
@@ -78,25 +87,34 @@
             align-items: center;
             border-radius: 50%;
             cursor: pointer;
+            font-family: "Baloo 2", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: bold;
+            font-style: normal;
+            transition: background-color 0.3s;
         }
 
         .letra.amarillo {
-            background-color: yellow;
+            background-color: #ffeb3b;
         }
 
         #rosco2 .letra {
-            background-color: orange;
+            background-color: #ff9800;
+        }
+
+        #rosco2 .letra.amarillo {
+            background-color: #ffeb3b;
         }
         .letra.verde {
-            background-color: green !important;
+            background-color: #4caf50 !important;
         }
         .letra.rojo {
-            background-color: red !important;
+            background-color: #f44336 !important;
         }
         .centro {
             position: absolute;
-            width: 90%;
-            height: 90%;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             background-color: white;
             top: 50%;
@@ -111,6 +129,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            border-radius: 50%;
         }
         .temporizador {
             font-size: 30px;
@@ -119,12 +138,13 @@
             padding: 10px 20px;
             color: white;
             border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         #temporizador1 {
-            background-color: blue;
+            background-color: #2196f3;
         }
         #temporizador2 {
-            background-color: orange;
+            background-color: #ff9800;
         }
         .contador {
             font-size: 20px;
@@ -132,15 +152,17 @@
             padding: 5px 15px;
             color: white;
             border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         #contador1 {
-            background-color: blue;
+            background-color: #2196f3;
         }
         #contador2 {
-            background-color: orange;
+            background-color: #ff9800;
         }
     </style>
 </head>
+
 <body>
     <div class="pantalla-inicial" id="pantalla-inicial">
         <div class="opcion" onclick="iniciarJuego('ulrich-yumi')">
@@ -160,14 +182,14 @@
             <div class="rosco" id="rosco1">
                 <div class="centro"><img id="imagen1" src="" alt="Imagen centro"></div>
             </div>
-            <div class="temporizador" id="temporizador1">05:00</div>
+            <div class="temporizador" id="temporizador1">07:00</div>
             <div class="contador" id="contador1">0</div>
         </div>
         <div class="contenedor">
             <div class="rosco" id="rosco2">
                 <div class="centro"><img id="imagen2" src="" alt="Imagen centro"></div>
             </div>
-            <div class="temporizador" id="temporizador2">05:00</div>
+            <div class="temporizador" id="temporizador2">07:00</div>
             <div class="contador" id="contador2">0</div>
         </div>
     </div>
@@ -185,7 +207,6 @@
         function iniciarJuego(opcion) {
             document.getElementById("pantalla-inicial").style.display = "none";
             document.getElementById("pantalla-juego").style.display = "flex";
-            document.getElementById("highlighter").style.display = "block";
             
             if (opcion === "ulrich-yumi") {
                 document.getElementById("imagen1").src = "https://images2.fanpop.com/images/photos/5400000/Ulrich-code-lyoko-5456469-604-460.jpg";
@@ -200,14 +221,20 @@
             crearRosco("rosco1");
             crearRosco("rosco2");
             letraFocus("rosco1");
-            letraFocus("rosco2");
             actualizarFoco();
         }
 
         document.addEventListener("keydown", (event) => {
             if (event.key === "ArrowRight") {
+                if(document.getElementById('temporizador1').activo === true){
+                    document.getElementById(`temporizador${focusRosco}`).click();
+                }
                 focusRosco = 2;
+
             } else if (event.key === "ArrowLeft") {
+                if(document.getElementById('temporizador2').activo === true){
+                    document.getElementById(`temporizador${focusRosco}`).click();
+                }
                 focusRosco = 1;
             }
             actualizarFoco();
@@ -229,8 +256,8 @@
 
         function crearRosco(id) {
             const rosco = document.getElementById(id);
-            const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-            const radio = 250;
+            const letras = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
+            const radio =  260;//Separación de las letras IMPORTANTE -> ADAPTAR A LA PANTALLA (RESPONSIVE)
             const centroX = 275, centroY = 275;
             
             letras.forEach((letra, index) => {
@@ -239,6 +266,7 @@
                 const y = centroY + radio * Math.sin(angulo) - 30;
                 
                 const divLetra = document.createElement("div");
+                divLetra.id = `${id}-${letra}`;
                 divLetra.classList.add("letra");
                 divLetra.textContent = letra;
                 divLetra.style.left = `${x}px`;
@@ -248,38 +276,99 @@
                 rosco.appendChild(divLetra);
             });
         }
-        /*function letraFocus(id) {
+        function letraFocus(id) {
             const rosco = document.getElementById(id);
             const letras = rosco.querySelectorAll(".letra");
-            let focus = 0;
-            letras[focus].classList.add("amarillo");
+            let focusa = 0;
+            let focusb = 0;
+            let terminadoA = false;
+            let terminadoB = false;
+
+            document.getElementById("rosco1").querySelectorAll(".letra")[0].classList.add("amarillo");
+            document.getElementById("rosco2").querySelectorAll(".letra")[0].classList.add("amarillo");
             document.addEventListener("keydown", (event) => {
                 if (event.key === "b") {
-                    letras[focus].classList.remove("amarillo");
-                    alternarColor(letras[focus], id);
-                    focus = (focus + 1) % letras.length;
-                    letras[focus].classList.add("amarillo");
-                } else if (event.key === "m") {
-                    alternarColor(letras[focus], id);
-                    alternarColor(letras[focus], id);
+                    if(focusRosco === 1 && terminadoA === false){
+                        document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.remove("amarillo");
+                        document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.add("verde");
+                        focusa = (focusa + 1) % letras.length;
+                        document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.add("amarillo");
+                        actualizarContador("rosco1");
+                    } else if(focusRosco === 2 && terminadoB === false){
+                        document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.remove("amarillo");
+                        document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.add("verde");
+                        focusb = (focusb + 1) % letras.length;
+                        document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.add("amarillo");
+                        actualizarContador("rosco2");
+                    }
+
+                } else if (event.key === "m" ) {
+                    if(focusRosco === 1 && terminadoA === false){
+                        document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.remove("amarillo");
+                        document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.add("rojo");
+                        focusa = (focusa + 1) % letras.length;
+                        document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.add("amarillo");
+                    } 
+                    else if(focusRosco === 2 && terminadoB === false){
+                        document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.remove("amarillo");
+                        document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.add("rojo");
+                        focusb = (focusb + 1) % letras.length;
+                        document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.add("amarillo");
+                    }
+                    if (focusRosco === 1 && id === "rosco1" && terminadoA === false) {
+                        focusRosco = 2;
+                    } else if (focusRosco === 2 && id === "rosco1") {
+                        focusRosco = 1;  
+                    }
+                    actualizarFoco();
+
                 } else if (event.key === "n") {
+                    if (focusRosco === 1 && id === "rosco1" && terminadoA === false) {
+                        document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.remove("amarillo");
+                        focusa = (focusa + 1) % letras.length;
+                        document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.add("amarillo");
+                        focusRosco = 2;
+                    } else if (focusRosco === 2 && id === "rosco1" && terminadoB === false) {
+                        document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.remove("amarillo");
+                        focusb = (focusb + 1) % letras.length;
+                        document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.add("amarillo");
+                        focusRosco = 1;  
+                    }
                     actualizarFoco();
                 }
-                letras[focus].classList.add("focus");
-                letras.forEach((letra, index) => {
-                    if (index !== focus) {
-                        letra.classList.remove("focus");
+                //Si ya ha dado una vuelta entera, que vaya a la siguiente que no tenga ni rojo ni verde
+                if(focusRosco === 1){    
+                    while(document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.contains("rojo") || document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.contains("verde")){
+                        document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.remove("amarillo");
+                        focusa = (focusa + 1) % letras.length;
+                        if (document.getElementById(`contador${focusRosco}`).textContent === letras.length.toString()){
+                            terminadoA = true;
+                            break;
+                        }
+                        document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.add("amarillo");
                     }
-                });
+                } else if(focusRosco === 2){
+                    while(document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.contains("rojo") || document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.contains("verde")){
+                        document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.remove("amarillo");
+                        focusb = (focusb + 1) % letras.length;
+                        if (document.getElementById(`contador${focusRosco}`).textContent === letras.length.toString()){
+                            terminadoB = true;
+                            break;
+                        }
+                        document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.add("amarillo");
+                    }
+                }
             });
-        }*/
-        function alternarColor(elemento, roscoId) {
+        }
+
+        function alternarColor(elemento, roscoId) {  //Para cuando se usa el ratón y no las teclas
             if (elemento.classList.contains("verde")) {
                 elemento.classList.remove("verde");
                 elemento.classList.add("rojo");
             } else if (elemento.classList.contains("rojo")) {
                 elemento.classList.remove("rojo");
             } else {
+                elemento.classList.remove("amarillo");
                 elemento.classList.add("verde");
             }
             actualizarContador(roscoId);
@@ -292,7 +381,7 @@
         }
         
         function iniciarTemporizador(id) {
-            let tiempo = 300;
+            let tiempo = 420;
             let activo = false;
             const elemento = document.getElementById(id);
             let intervalo;
@@ -327,3 +416,4 @@
     </script>
 </body>
 </html>
+
