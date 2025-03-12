@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rosco Pasapalabra</title>
+
+</head>
+
+<body>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap');
+
         body {
             display: flex;
             flex-direction: column;
@@ -17,7 +22,7 @@
             font-family: 'Baloo 2', sans-serif;
         }
         .highlighter {
-            width: 300px;
+            width: 80%;
             height: 50px;
             background-color: #ffeb3b;
             text-align: center;
@@ -29,24 +34,26 @@
             display: none;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-
         .pantalla-inicial {
             display: flex;
             justify-content: space-around;
             align-items: center;
             width: 80%;
             cursor: pointer;
+            flex-wrap: wrap;
         }
         .opcion {
             text-align: center;
             transition: transform 0.3s;
+            margin: 10px;
         }
         .opcion:hover {
             transform: scale(1.05);
         }
         .opcion img {
-            width: 300px;
-            height: 300px;
+            width: 15hv;
+            max-width: 300px;
+            height: 10hv;
             object-fit: cover;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -57,16 +64,20 @@
             justify-content: space-around;
             align-items: center;
             width: 100%;
+            flex-wrap: wrap;
         }
         .contenedor {
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin: 10px;
         }
         .rosco {
             position: relative;
-            width: 550px;
-            height: 550px;
+            width: 21vw;
+            max-width: 450px;
+            height: 21vw;
+            max-height: 450px;
             border-radius: 50%;
             background-color: white;
             border: 5px solid transparent;
@@ -77,31 +88,33 @@
         }
         .letra {
             position: absolute;
-            width: 60px;
-            height: 60px;
             background-color: #2196f3;
             color: white;
-            font-weight: bold;
             display: flex;
             justify-content: center;
             align-items: center;
             border-radius: 50%;
             cursor: pointer;
-            font-family: "Baloo 2", sans-serif;
-            font-optical-sizing: auto;
-            font-weight: bold;
-            font-style: normal;
             transition: background-color 0.3s;
+            width: 10vw;
+            height: 10vw;
         }
-
         .letra.amarillo {
             background-color: #ffeb3b;
+            animation: heartbeat 1.2s infinite;
         }
 
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
         #rosco2 .letra {
             background-color: #ff9800;
         }
-
         #rosco2 .letra.amarillo {
             background-color: #ffeb3b;
         }
@@ -113,8 +126,8 @@
         }
         .centro {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 100%; /*Foto con respecto al fondo del círculo*/
+            height: 100%; /*Foto con respecto al fondo del círculo*/
             border-radius: 50%;
             background-color: white;
             top: 50%;
@@ -132,13 +145,46 @@
             border-radius: 50%;
         }
         .temporizador {
-            font-size: 30px;
+            font-size: 4vw;
             margin-top: 20px;
             cursor: pointer;
-            padding: 10px 20px;
+            padding: 20px 30px;
             color: white;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            width: 6vh;
+            height: 9vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #2196f3; /* Initial background color */
+        }
+
+        .temporizador::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-sizing: border-box;
+            animation: countdown 12s linear forwards;
+        }
+
+        @keyframes countdown {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .temporizador.red {
+            background-color: #f44336 !important; /* Red background when time is up */
         }
         #temporizador1 {
             background-color: #2196f3;
@@ -147,12 +193,17 @@
             background-color: #ff9800;
         }
         .contador {
-            font-size: 20px;
+            font-size: 3.5vw;
             margin-top: 10px;
             padding: 5px 15px;
             color: white;
-            border-radius: 5px;
+            border-radius: 50%;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 3vh;
+            height: 5vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         #contador1 {
             background-color: #2196f3;
@@ -160,10 +211,144 @@
         #contador2 {
             background-color: #ff9800;
         }
-    </style>
-</head>
+        .elegirFotosDeArchivo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 80%;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .upload-section {
+            margin: 10px 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .upload-section label {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        .upload-section input {
+            padding: 10px;
+            border: 2px solid #2196f3;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .start-button {
+            background-color: #2196f3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .start-button:hover {
+            background-color: #1976d2;
+        }
+        @media (max-width: 768px) {
+            .pantalla-inicial {
+                flex-direction: column;
+            }
+            .pantalla-juego {
+                flex-direction: column;
+            }
+            .rosco {
+                width: 90vw;
+                height: 90vw;
+            }
+            .letra {
+                width: 12vw;
+                height: 12vw;
+            }
+            .temporizador {
+                font-size: 6vw;
+            }
+            .contador {
+                font-size: 5vw;
+                width: 80px;
+                height: 80px;
+            }
+            .highlighter {
+                width: 90%;
+            }
+            .elegirFotosDeArchivo {
+                width: 90%;
+            }
+        }
 
-<body>
+        .instrucciones-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .instrucciones-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .instrucciones-content h2 {
+            margin-top: 0;
+        }
+
+        .instrucciones-content ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .videoIzquierda {
+            width: 100vh;
+            height: 100vh;
+            object-fit: cover;
+            position: absolute;
+            clip-path: inset(0 50% 0 0); /* Recorta la mitad derecha */
+            transform: translateX(25%); /* Centra la parte restante */
+        }
+
+        .videoDerecha {
+            width: 100vh;
+            height: 100vh;
+            object-fit: cover;
+            position: absolute;
+            clip-path: inset(0 0 0 50%); /* Recorta la mitad izquierda */
+            transform: translateX(-25%); /* Centra la parte restante */
+        }
+
+
+    </style>
     <div class="pantalla-inicial" id="pantalla-inicial">
         <div class="opcion" onclick="iniciarJuego('ulrich-yumi')">
             <img src="https://1.bp.blogspot.com/-MpaXQdHh1Dc/Unlf1fbacgI/AAAAAAAABe4/P9T8vbE_Q7M/s1600/looove.jpg" alt="Ulrich vs Yumi">
@@ -173,6 +358,36 @@
             <img src="https://images-na.ssl-images-amazon.com/images/S/pv-target-images/7921da61d746c2323a86319af5f78ee946ebaab1126bb81c30444edc75248f07._RI_V_TTW_.png" alt="William vs Odd">
             <h1>William vs Odd</h1>
         </div>
+        <div class="opcion" onclick="elegirDeArchivo()">
+            <img src="https://img.freepik.com/premium-vector/purple-yellow-abstract-versus-background_6735-331.jpg" alt="Player vs Player">
+            <h1>Player vs Player</h1>
+        </div>
+        <div class="opcion" onclick="iniciarJuego('Izquierda-Derecha')">
+            <img src="https://static.vecteezy.com/system/resources/previews/014/196/003/non_2x/cute-girls-recording-video-on-camera-cartoon-vector.jpg" alt="Webcam">
+            <h1>Webcam</h1>
+        </div>
+    </div>
+
+    <div class="elegirFotosDeArchivo" id="elegirFotosDeArchivo" style="display: none;">
+            <div class="upload-container">
+                <h2>Sube dos imágenes</h2>
+                <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-around; width: 100%;">
+                    <div class="upload-section">
+                        <label for="imagen1Input">Jugador 1:</label>
+                        <input type="file" id="imagen1Input" accept="image/*">
+                    </div>
+
+                    <div class="upload-section">
+                        <label for="imagen2Input">Jugador 2:</label>
+                        <input type="file" id="imagen2Input" accept="image/*">
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-around; width: 17%;">
+                    <button class="start-button" onclick="volverAtras()">Volver</button>
+                    <button class="start-button" onclick="iniciarJuego('J1-J2')">Iniciar juego</button>
+                </div>
+            </div>
+
     </div>
     
     <div class="highlighter" id="highlighter">Jugando: Jugador 1</div>
@@ -180,57 +395,145 @@
     <div class="pantalla-juego" id="pantalla-juego">
         <div class="contenedor">
             <div class="rosco" id="rosco1">
-                <div class="centro"><img id="imagen1" src="" alt="Imagen centro"></div>
+                <div class="centro">
+                    <img id="imagen1" src="" alt="Imagen centro"> 
+                    <video class="videoDerecha" id="video1" autoplay playsinline style="display: none;"></video>
+                </div>
             </div>
-            <div class="temporizador" id="temporizador1">07:00</div>
-            <div class="contador" id="contador1">0</div>
         </div>
         <div class="contenedor">
             <div class="rosco" id="rosco2">
-                <div class="centro"><img id="imagen2" src="" alt="Imagen centro"></div>
+                <div class="centro">
+                    <img id="imagen2" src="" alt="Imagen centro">
+                    <video class="videoIzquierda" id="video2" autoplay playsinline style="display: none"></video>
+                </div>
             </div>
-            <div class="temporizador" id="temporizador2">07:00</div>
-            <div class="contador" id="contador2">0</div>
+        </div>
+        <div style="position: absolute; top: 75%; left: 5%; display: flex; align-items: center;">
+            <div class="temporizador" id="temporizador1">150</div>
+            <div class="contador" id="contador1" style="margin-right: 10px;">0</div>
+        </div>
+        <div style="position: absolute; top: 75%; right: 5%; display: flex; align-items: center;">
+            <div class="contador" id="contador2" style="margin-right: 10px;">0</div>
+            <div class="temporizador" id="temporizador2">150</div>
+        </div>
+    </div>
+
+    <div class="instrucciones-overlay" id="instrucciones-overlay">
+        <div class="instrucciones-content">
+            <span class="close-btn" onclick="cerrarInstrucciones()">&times;</span>
+            <h2>Cómo Jugar</h2>
+            <p>Hay dos formas de jugar:</p>
+            <h3>Atajos de Teclado:</h3>
+            <ul>
+                <li><strong>B:</strong> Marcar letra como correcta</li>
+                <li><strong>M:</strong> Marcar letra como incorrecta</li>
+                <li><strong>N:</strong> Pasar a la siguiente letra</li>
+                <li><strong>Espacio:</strong> Iniciar/Detener temporizador</li>
+                <li><strong>Flechas Izquierda/Derecha:</strong> Cambiar de jugador</li>
+            </ul>
+            <h3>Ratón/Dedo:</h3>
+            <ul>
+                <li>Haz clic en una letra para marcarla como correcta o incorrecta</li>
+                <li>Haz clic en el temporizador para iniciarlo o detenerlo</li>
+            </ul>
         </div>
     </div>
 
     <script>
         let focusRosco = 1;
         let jugadores = {1: "Jugador 1", 2: "Jugador 2"};
+        let tiempoInicio = 150;
+        
         
         function actualizarFoco() {
-            document.getElementById("highlighter").textContent = `Jugando: ${jugadores[focusRosco]}`;
             document.getElementById("rosco1").classList.toggle("focus", focusRosco === 1);
             document.getElementById("rosco2").classList.toggle("focus", focusRosco === 2);
         }
-
-        function iniciarJuego(opcion) {
+        
+        function elegirDeArchivo() {
             document.getElementById("pantalla-inicial").style.display = "none";
-            document.getElementById("pantalla-juego").style.display = "flex";
-            
+            document.getElementById("elegirFotosDeArchivo").style.display = "flex";
+        
+            function guardarImagen(input, imgElement) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    imgElement.src = e.target.result; // Guardar la imagen en la variable .src
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        
+            document.getElementById("imagen1Input").addEventListener("change", function () {
+                if (this.files.length > 0) {
+                    guardarImagen(this, document.getElementById("imagen1"));
+                }
+            });
+        
+            document.getElementById("imagen2Input").addEventListener("change", function () {
+                if (this.files.length > 0) {
+                    guardarImagen(this, document.getElementById("imagen2"));
+                }
+            });
+        }
+        
+        function volverAtras() {
+            document.getElementById("elegirFotosDeArchivo").style.display = "none";
+            document.getElementById("pantalla-inicial").style.display = "flex";
+        }
+        
+        function iniciarJuego(opcion) {
+            document.getElementById("pantalla-inicial").style.display = "none";            
             if (opcion === "ulrich-yumi") {
                 document.getElementById("imagen1").src = "https://images2.fanpop.com/images/photos/5400000/Ulrich-code-lyoko-5456469-604-460.jpg";
                 document.getElementById("imagen2").src = "https://i.pinimg.com/736x/8d/e8/0a/8de80a2dc86be511fd18159c1b14f585--yumi-ishiyama-code-lyoko.jpg";
                 jugadores = {1: "Ulrich", 2: "Yumi"};
-            } else {
+            } else if (opcion === "william-odd") {
                 document.getElementById("imagen1").src = "https://img.codelyoko.fr/galeries/william/William_209.jpg";
                 document.getElementById("imagen2").src = "https://img.codelyoko.fr/galeries/odd2/Odd_0128.jpg";
                 jugadores = {1: "William", 2: "Odd"};
+            } else if (opcion === "J1-J2") { 
+                jugadores = {1: "Jugador 1", 2: "Jugador 2"};
+                if(document.getElementById("imagen1Input").files.length === 0){
+                    document.getElementById("imagen1").src = "https://dbdzm869oupei.cloudfront.net/img/t-shirts/preview/21176.png";
+                }
+                if(document.getElementById("imagen2Input").files.length === 0){
+                    document.getElementById("imagen2").src = "https://dbdzm869oupei.cloudfront.net/img/t-shirts/preview/5e955184d9d0b.png";
+                }
+            } else if (opcion === "Izquierda-Derecha") {
+                jugadores = {1: "Izquierda", 2: "Derecha"};
+                document.getElementById("imagen1").style.display = "none";
+                document.getElementById("imagen2").style.display = "none";
+                document.getElementById("video1").style.display = "block";
+                document.getElementById("video2").style.display = "block";
+                iniciarCamara();
             }
+            document.getElementById("elegirFotosDeArchivo").style.display = "none";
+            //document.getElementById("highlighter").style.display = "block";
+            document.getElementById("pantalla-juego").style.display = "flex";
             
             crearRosco("rosco1");
             crearRosco("rosco2");
-            letraFocus("rosco1");
+            letraFocus();
             actualizarFoco();
         }
-
+        
+        async function iniciarCamara() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true }); // Acceder a la cámara
+                document.getElementById("video1").srcObject = stream; // Mostrar el video en el elemento <video>
+                document.getElementById("video2").srcObject = stream; // Mostrar el video en el elemento <video>
+            } catch (error) {
+                console.error("Error al acceder a la cámara:", error);
+            }
+        }  
+        
         document.addEventListener("keydown", (event) => {
             if (event.key === "ArrowRight") {
                 if(document.getElementById('temporizador1').activo === true){
                     document.getElementById(`temporizador${focusRosco}`).click();
                 }
                 focusRosco = 2;
-
+        
             } else if (event.key === "ArrowLeft") {
                 if(document.getElementById('temporizador2').activo === true){
                     document.getElementById(`temporizador${focusRosco}`).click();
@@ -238,9 +541,9 @@
                 focusRosco = 1;
             }
             actualizarFoco();
-
+        
         });
-
+        
         document.addEventListener("keydown", (event) => {
             if (event.key === " ") {
                 event.preventDefault();
@@ -249,21 +552,32 @@
             }
         });
             
-
+        
         document.addEventListener("DOMContentLoaded", () => {
             actualizarFoco();
+            document.getElementById("instrucciones-overlay").style.display = "flex";
         });
-
+        
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                cerrarInstrucciones();
+            }
+        });
+        
+        function cerrarInstrucciones() {
+            document.getElementById("instrucciones-overlay").style.display = "none";
+        }
+        
         function crearRosco(id) {
             const rosco = document.getElementById(id);
             const letras = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
-            const radio =  260;//Separación de las letras IMPORTANTE -> ADAPTAR A LA PANTALLA (RESPONSIVE)
-            const centroX = 275, centroY = 275;
+            const radio = rosco.offsetWidth / 2; // Ajuste dinámico del radio
+            const centroX = rosco.offsetWidth / 2, centroY = rosco.offsetHeight / 2;
             
             letras.forEach((letra, index) => {
                 const angulo = ((index - 6) / letras.length) * (2 * Math.PI); // Ajuste para poner la A arriba
-                const x = centroX + radio * Math.cos(angulo) - 30;
-                const y = centroY + radio * Math.sin(angulo) - 30;
+                const x = centroX + radio * Math.cos(angulo) - (rosco.offsetWidth / 18); // Ajuste de la posición X
+                const y = centroY + radio * Math.sin(angulo) - (rosco.offsetHeight / 18); // Ajuste de la posición Y
                 
                 const divLetra = document.createElement("div");
                 divLetra.id = `${id}-${letra}`;
@@ -271,64 +585,76 @@
                 divLetra.textContent = letra;
                 divLetra.style.left = `${x}px`;
                 divLetra.style.top = `${y}px`;
+                divLetra.style.width = `${rosco.offsetWidth / 12}px`; // Ajuste dinámico del tamaño de las letras
+                divLetra.style.height = `${rosco.offsetHeight / 12}px`; // Ajuste dinámico del tamaño de las letras
+                divLetra.style.fontSize = `${rosco.offsetWidth / 30}px`; // Ajuste dinámico del tamaño de la fuente
                 divLetra.addEventListener("click", () => alternarColor(divLetra, id));
                 
                 rosco.appendChild(divLetra);
             });
         }
-        function letraFocus(id) {
-            const rosco = document.getElementById(id);
-            const letras = rosco.querySelectorAll(".letra");
+        
+        window.addEventListener("resize", () => {
+            document.querySelectorAll(".rosco").forEach(rosco => {
+                while (rosco.firstChild) {
+                    rosco.removeChild(rosco.firstChild);
+                }
+                crearRosco(rosco.id);
+            });
+        });
+        
+        function letraFocus() {
+            const letras = document.getElementById("rosco1").querySelectorAll(".letra");
             let focusa = 0;
             let focusb = 0;
             let terminadoA = false;
             let terminadoB = false;
-
+        
             document.getElementById("rosco1").querySelectorAll(".letra")[0].classList.add("amarillo");
             document.getElementById("rosco2").querySelectorAll(".letra")[0].classList.add("amarillo");
             document.addEventListener("keydown", (event) => {
                 if (event.key === "b") {
-                    if(focusRosco === 1 && terminadoA === false){
+                    if(focusRosco === 1 && terminadoA === false && !document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.contains("rojo")){
                         document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.remove("amarillo");
                         document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.add("verde");
                         focusa = (focusa + 1) % letras.length;
                         document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.add("amarillo");
                         actualizarContador("rosco1");
-                    } else if(focusRosco === 2 && terminadoB === false){
+                    } else if(focusRosco === 2 && terminadoB === false && !document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.contains("rojo")){
                         document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.remove("amarillo");
                         document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.add("verde");
                         focusb = (focusb + 1) % letras.length;
                         document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.add("amarillo");
                         actualizarContador("rosco2");
                     }
-
+        
                 } else if (event.key === "m" ) {
-                    if(focusRosco === 1 && terminadoA === false){
+                    if(focusRosco === 1 && terminadoA === false && !document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.contains("verde")){
                         document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.remove("amarillo");
                         document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.add("rojo");
                         focusa = (focusa + 1) % letras.length;
                         document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.add("amarillo");
                     } 
-                    else if(focusRosco === 2 && terminadoB === false){
+                    else if(focusRosco === 2 && terminadoB === false && !document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.contains("verde")){
                         document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.remove("amarillo");
                         document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.add("rojo");
                         focusb = (focusb + 1) % letras.length;
                         document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.add("amarillo");
                     }
-                    if (focusRosco === 1 && id === "rosco1" && terminadoA === false) {
+                    if (focusRosco === 1 && terminadoA === false) {
                         focusRosco = 2;
-                    } else if (focusRosco === 2 && id === "rosco1") {
+                    } else if (focusRosco === 2) {
                         focusRosco = 1;  
                     }
                     actualizarFoco();
-
+        
                 } else if (event.key === "n") {
-                    if (focusRosco === 1 && id === "rosco1" && terminadoA === false) {
+                    if (focusRosco === 1 && terminadoA === false && !document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.contains("verde")) {
                         document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.remove("amarillo");
                         focusa = (focusa + 1) % letras.length;
                         document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.add("amarillo");
                         focusRosco = 2;
-                    } else if (focusRosco === 2 && id === "rosco1" && terminadoB === false) {
+                    } else if (focusRosco === 2 && terminadoB === false  && !document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.contains("verde")) {
                         document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.remove("amarillo");
                         focusb = (focusb + 1) % letras.length;
                         document.getElementById(`rosco${focusRosco}-${letras[focusb].textContent}`).classList.add("amarillo");
@@ -337,6 +663,16 @@
                     actualizarFoco();
                 }
                 //Si ya ha dado una vuelta entera, que vaya a la siguiente que no tenga ni rojo ni verde
+                if(document.getElementById("Contador1").textContent === letras.length.toString() || document.getElementById("Contador2").textContent === letras.length.toString()){
+                    if(focusRosco === 1){
+                        terminadoA = true;
+                        focusRosco = 2;
+                    } else if(focusRosco === 2){
+                        terminadoB = true;
+                        focusRosco = 1;
+                    }
+                    actualizarFoco();
+                }
                 if(focusRosco === 1){    
                     while(document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.contains("rojo") || document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.contains("verde")){
                         document.getElementById(`rosco${focusRosco}-${letras[focusa].textContent}`).classList.remove("amarillo");
@@ -360,7 +696,7 @@
                 }
             });
         }
-
+        
         function alternarColor(elemento, roscoId) {  //Para cuando se usa el ratón y no las teclas
             if (elemento.classList.contains("verde")) {
                 elemento.classList.remove("verde");
@@ -381,39 +717,38 @@
         }
         
         function iniciarTemporizador(id) {
-            let tiempo = 420;
+            let tiempo = 150;
             let activo = false;
             const elemento = document.getElementById(id);
             let intervalo;
             
             function actualizarTiempo() {
-                const minutos = Math.floor(tiempo / 60);
-                const segundos = tiempo % 60;
-                elemento.textContent = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+            elemento.textContent = `${tiempo}`;
             }
             
             elemento.addEventListener("click", () => {
-                if (activo) {
-                    clearInterval(intervalo);
+            if (activo) {
+                clearInterval(intervalo);
+            } else {
+                intervalo = setInterval(() => {
+                if (tiempo > 0) {
+                    tiempo--;
+                    actualizarTiempo();
                 } else {
-                    intervalo = setInterval(() => {
-                        if (tiempo > 0) {
-                            tiempo--;
-                            actualizarTiempo();
-                        } else {
-                            clearInterval(intervalo);
-                        }
-                    }, 1000);
+                    clearInterval(intervalo);
                 }
-                activo = !activo;
+                }, 1000);
+            }
+            activo = !activo;
             });
         }
-    
+        
         document.addEventListener("DOMContentLoaded", function() {
             iniciarTemporizador("temporizador1");
             iniciarTemporizador("temporizador2");
-        });
+        });    
     </script>
 </body>
 </html>
+
 
